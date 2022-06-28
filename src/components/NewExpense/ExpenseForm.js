@@ -1,33 +1,61 @@
 import React, { useState } from "react";
+
 import "./ExpenseForm.css";
 
 const ExpenseForm = (props) => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
+  // const [userInput, setUserInput] = useState({
+  //   enteredTitle: '',
+  //   enteredAmount: '',
+  //   enteredDate: '',
+  // });
 
   const titleChangeHandler = (event) => {
     setEnteredTitle(event.target.value);
+    // setUserInput({
+    //   ...userInput,
+    //   enteredTitle: event.target.value,
+    // });
+    // setUserInput((prevState) => {
+    //   return { ...prevState, enteredTitle: event.target.value };
+    // });
   };
+
   const amountChangeHandler = (event) => {
     setEnteredAmount(event.target.value);
+    // setUserInput({
+    //   ...userInput,
+    //   enteredAmount: event.target.value,
+    // });
   };
-  const datechangeHandler = (event) => {
+
+  const dateChangeHandler = (event) => {
     setEnteredDate(event.target.value);
+    // setUserInput({
+    //   ...userInput,
+    //   enteredDate: event.target.value,
+    // });
   };
 
   const submitHandler = (event) => {
-    event.preventDefault(); //To avoid refresh when form submits
+    event.preventDefault();
 
     const expenseData = {
       title: enteredTitle,
       amount: enteredAmount,
       date: new Date(enteredDate),
     };
+
     props.onSaveExpenseData(expenseData);
     setEnteredTitle("");
-    setEnteredAmount(""); //Added to clear label after form submits
+    setEnteredAmount("");
     setEnteredDate("");
+  };
+
+  const removeFormHandler = () => {
+    props.setEditing();
   };
 
   return (
@@ -47,7 +75,7 @@ const ExpenseForm = (props) => {
             type="number"
             min="0.01"
             step="0.01"
-            value={enteredAmount} //Added to clear label after form submits
+            value={enteredAmount}
             onChange={amountChangeHandler}
           />
         </div>
@@ -58,12 +86,15 @@ const ExpenseForm = (props) => {
             min="2019-01-01"
             max="2022-12-31"
             value={enteredDate}
-            onChange={datechangeHandler}
+            onChange={dateChangeHandler}
           />
         </div>
       </div>
       <div className="new-expense__actions">
-        <button type="submit">Add expense</button>
+        <button type="submit">Add Expense</button>
+        <button type="button" onClick={removeFormHandler}>
+          Cancel
+        </button>
       </div>
     </form>
   );
